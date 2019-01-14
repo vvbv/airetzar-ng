@@ -28,6 +28,7 @@ using std::find;
 
 vector<string> split(const string &s, char delim);
 string trim(const string& str);
+std::string current_time();
 
 int main(int argc, const char* argv[]){
 
@@ -104,7 +105,7 @@ int main(int argc, const char* argv[]){
             for( int k = 0; k < w_networks.size(); k++ ){
                 if( w_networks[ k ].channel ==  channels[j] ){
                     cout    
-                        << "Sending DeAuth " 
+                        << current_time() << " Sending DeAuth " 
                         << to_string(i+1) + "/" + to_string(iterations)
                         << " - BSSID: ["  
                         << w_networks[ k ].bssid << "] - C: " 
@@ -138,4 +139,14 @@ string trim(const string& str){
     }
     size_t last = str.find_last_not_of(' ');
     return str.substr(first, (last - first + 1));
+}
+
+std::string current_time(){
+    time_t now = time(NULL);
+    struct tm tstruct;
+    char buf[40];
+    tstruct = *localtime(&now);
+    //format: HH:mm:ss
+    strftime(buf, sizeof(buf), "%X", &tstruct);
+    return buf;
 }
