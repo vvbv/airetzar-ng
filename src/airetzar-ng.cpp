@@ -4,6 +4,7 @@
 #include <vector>
 #include <tuple>
 #include <fstream>
+#include <sstream>
 
 using std::cout;
 using std::endl;
@@ -14,7 +15,11 @@ using std::get;
 using std::tuple;
 using std::stoi;
 using std::ifstream;
+using std::getline;
+using std::stringstream;
+using std::system;
 
+vector<string> split(const string &s, char delim);
 string trim(const string& str);
 
 int main(int argc, const char* argv[]){
@@ -47,7 +52,7 @@ int main(int argc, const char* argv[]){
         string essid;
     };
 
-    vector < string > w_network_raw;
+    vector < wireless_network > w_networks;
 
     string line;
     ifstream file;
@@ -63,15 +68,40 @@ int main(int argc, const char* argv[]){
             if( line.find(":") == string::npos ){
                 break;
             }else{
-                w_network_raw.push_back( line );
+                vector<string> tokens = split( line, ',' );
+                struct wireless_network network;
+                network.bssid = trim( tokens[0] );
+                network.channel =  stoi( trim( tokens[3] ) );
+                network.essid = trim( tokens[13] );
+                w_networks.push_back( network );
             }
         }
     }
     file.close();
 
-    cout << w_network_raw[2] << endl;
+    cout << w_networks[0].essid << endl;
 
-    //int x = std::system("macvendor --no-update b4:82:fe:cf:12:28");
+    //int x = system("macvendor --no-update b4:82:fe:cf:12:28");
     
     return 0;
+}
+
+vector<string> split(const string &s, char delim) {
+  stringstream ss(s);
+  string item;
+  vector<std::string> elems;
+  while (getline(ss, item, delim)) {
+    elems.push_back(item);
+  }
+  return elems;
+}
+
+string trim(const string& str){
+    size_t first = str.find_first_not_of(' ');
+    if (string::npos == first)
+    {
+        return str;
+    }
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
 }
