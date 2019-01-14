@@ -1,0 +1,9 @@
+
+BSSID, First time seen, Last time seen, channel, Speed, Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key
+84:AA:9C:C0:3D:58, 2019-01-14 00:05:36, 2019-01-14 00:05:39,  9,  54, WPA2, CCMP TKIP,PSK,  -7,       24,        4,   0.  0.  0.  0,   8, LeopardX, 
+EC:22:80:5C:B5:91, 2019-01-14 00:05:36, 2019-01-14 00:05:39,  1,  54, WPA2, CCMP TKIP,PSK, -72,       22,       14,   0.  0.  0.  0,  11, emcali_1216, 
+34:57:60:E1:60:D0, 2019-01-14 00:05:37, 2019-01-14 00:05:37,  2,  54, WPA2, CCMP,PSK, -77,        1,        0,   0.  0.  0.  0,  12, 466250504278, 
+
+Station MAC, First time seen, Last time seen, Power, # packets, BSSID, Probed ESSIDs
+48:C7:96:3C:C0:D9, 2019-01-14 00:05:36, 2019-01-14 00:05:38,  -1,       14, EC:22:80:5C:B5:91,
+
