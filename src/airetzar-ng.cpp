@@ -151,7 +151,7 @@ string trim(const string& str){
     return str.substr(first, (last - first + 1));
 }
 
-std::string current_time(){
+string current_time(){
     time_t now = time(NULL);
     struct tm tstruct;
     char buf[40];
