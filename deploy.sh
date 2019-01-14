@@ -1,5 +1,5 @@
 #!/bin/bash
-rm build/airtzar-ng
+rm build/airetzar-ng
 clear
-g++ --std=c++11 src/*.cpp -o build/airtzar-ng
-build/airtzar-ng
+g++ --std=c++11 src/*.cpp -o build/airetzar-ng
+build/airetzar-ng -i mon0 -f in.csv
