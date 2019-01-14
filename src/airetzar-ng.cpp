@@ -1,8 +1,3 @@
-#include <unistd.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <stdio.h>
-
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -15,9 +10,6 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-using std::make_tuple;
-using std::get;
-using std::tuple;
 using std::stoi;
 using std::ifstream;
 using std::getline;
