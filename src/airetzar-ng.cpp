@@ -41,8 +41,6 @@ int main(int argc, const char* argv[]){
         }
     }
 
-    cout << airodump_csv << " " << interface << endl;
-
     struct wireless_network {
         string bssid;
         int channel;
@@ -56,13 +54,13 @@ int main(int argc, const char* argv[]){
     file.open( airodump_csv.c_str() );
     bool first = true;
     while(getline(file, line)) {
-        line = trim(line);
+        
         if(first){
             if (line.find("BSSID") != string::npos) {
                 first = false;
             }
         }else{
-            if( line == "" ){
+            if( line.find(":") == string::npos ){
                 break;
             }else{
                 w_network_raw.push_back( line );
@@ -71,20 +69,9 @@ int main(int argc, const char* argv[]){
     }
     file.close();
 
-    cout << w_network_raw.size() << endl;
+    cout << w_network_raw[2] << endl;
 
     //int x = std::system("macvendor --no-update b4:82:fe:cf:12:28");
     
     return 0;
-}
-
-string trim(const string& str){
-
-    size_t first = str.find_first_not_of(' ');
-    if (string::npos == first)
-    {
-        return str;
-    }
-    size_t last = str.find_last_not_of(' ');
-    return str.substr(first, (last - first + 1));
 }
