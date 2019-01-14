@@ -31,9 +31,6 @@
 *.out
 *.app
 
-# Build
-build/airetzar-ng
-
 # vscode
 .vscode
 
