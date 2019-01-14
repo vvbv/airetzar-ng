@@ -26,6 +26,7 @@ int main(int argc, const char* argv[]){
 
     string airodump_csv, interface, whitelist = "";
     int iterations = 0;
+    int aireplay_packets = 4;
 
     bool toggle_flag = true;
     string option, param = "";
@@ -43,6 +44,8 @@ int main(int argc, const char* argv[]){
                 iterations = stoi( param );
             }else if( option == "-w" ){
                 whitelist = param;
+            }else if( option == "-ap" ){
+                aireplay_packets = stoi( param );
             }
             toggle_flag = true;
         }
@@ -117,7 +120,7 @@ int main(int argc, const char* argv[]){
                             << w_networks[ k ].bssid << "] - C: " 
                             << w_networks[ k ].channel << 
                         endl;
-                        command += "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null & ";
+                        command += "aireplay-ng -0 " + to_string(aireplay_packets) + " -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null & ";
                     }
                 }
             }
