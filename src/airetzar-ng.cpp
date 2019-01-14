@@ -98,7 +98,7 @@ int main(int argc, const char* argv[]){
 
     for( int i = 0; i < iterations; i++ ){
         for( int j = 0; j <= channels.size(); j++ ){
-            string command = "airmon-ng start " + interface + " " + to_string( channels[j] );
+            string command = "airmon-ng start " + interface + " " + to_string( channels[j] ) + " > /dev/null" ;
             system( command.c_str() );
             for( int k = 0; k < w_networks.size(); k++ ){
                 if( w_networks[ k ].channel ==  channels[j] ){
