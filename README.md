@@ -35,6 +35,17 @@ The script compiles the sources into `build/airetzar-ng`:
 g++ --std=c++11 src/*.cpp -o build/airetzar-ng
 ```
 
+## Releases
+
+Every push to `master` builds the project and creates a GitHub release tagged
+`v<version>`. The release includes the Linux x86-64 binary and its SHA-256
+checksum.
+
+The [VERSION](VERSION) file is the single source of truth for the release
+version. Increment it using [semantic versioning](https://semver.org/) before
+each push to `master`; the workflow rejects a version whose release already
+exists instead of overwriting it.
+
 ## Usage
 
 ```bash
